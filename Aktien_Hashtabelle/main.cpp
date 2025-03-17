@@ -44,7 +44,19 @@ int main() {
 				hashtable.import(arg, position);
 			}
 			else {
-				std::cout << "Ticker not found\n";
+				std::cout << "\nThis ticker has not been added yet!\n";
+				std::cout << "Name: ";
+				string name;
+				std::getline(cin, name);
+				if (hashtable.add(arg)) {
+					int position = hashtable.search(arg);
+					if (position != -1) {
+						hashtable.import(arg, position);
+					}
+				}
+				else {
+					std::cout << "Error\n";
+				}
 			}
 
 		}

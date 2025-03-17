@@ -119,11 +119,11 @@ int HashTable::search(const string& ticker) {
 		}
 
 	}
-	std::cout << "NOT FOUND";
 	return -1;
 }
 
 void HashTable::display(unsigned int position) {
+	std::cout << "\n";
 	std::cout << "Name: " << table[position].stock.name << std::endl;
 	std::cout << "Date: " << table[position].stock.stockdata[0].date << std::endl;
 	std::cout << "Open: " << table[position].stock.stockdata[0].open << "$" << std::endl;
@@ -134,6 +134,7 @@ void HashTable::display(unsigned int position) {
 }
 
 void HashTable::plot(unsigned int position) {
+	std::cout << "\n";
 	const auto& data = table[position].stock.stockdata;
 	string startDate = data[0].date, endDate;
 	int count = 0; //counter for valid entries (if not full array has imported values)
@@ -155,6 +156,8 @@ void HashTable::plot(unsigned int position) {
 		for (size_t i = 0; i < count; i++) {
 			std::cout << (data[i].close >= threshold ? "* " : "  ");
 		}
+		if (row == plotHeight) std::cout << maxPrice << "$";
+		if (row == 0) std::cout << minPrice << "$";
 		std::cout << "\n";
 	}
 	std::cout << startDate;
