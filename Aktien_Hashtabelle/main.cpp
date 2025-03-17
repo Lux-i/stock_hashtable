@@ -12,7 +12,16 @@ int main() {
 	while (true) {
 		showMenu();
 		std::getline(cin, input);
-		if (input == "1" || input == "ADD") {
+		string command;
+		string arg;
+		std::size_t pos = input.find(' ');
+		command = input.substr(0, pos);
+		arg = input.substr(pos + 1);
+		std::cout << hashtable.hash(input) << "\n";
+		if (arg == "") {
+			std::cout << "Missing argument!\n";
+		}
+		/*else if (input == "1" || input == "ADD") {
 
 		}
 		else if (input == "2" || input == "DEL") {
@@ -23,6 +32,6 @@ int main() {
 		}
 		else if (input == "4" || input == "SEARCH") {
 
-		}
+		}*/
 	}
 }
