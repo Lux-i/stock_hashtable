@@ -20,13 +20,13 @@ public:
 	int search(const string&);
 	void display(unsigned int);
 	void plot(unsigned int);
-	bool save(const string&) {};
-	bool load(const string&) {};
+	bool save(const string&);
+	bool load(const string&);
 private:
 	int tableSize;
 	int count;
 	vector<Entry> table;
 	unsigned int hashString(const string&);
-	bool insert();
+	bool insert() {};
 };
 

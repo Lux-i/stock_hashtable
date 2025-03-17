@@ -131,6 +131,9 @@ void HashTable::display(unsigned int position) {
 	std::cout << "Low: " << table[position].stock.stockdata[0].low << "$" << std::endl;
 	std::cout << "High: " << table[position].stock.stockdata[0].high << "$" << std::endl;
 	std::cout << "Volume: " << table[position].stock.stockdata[0].volume << std::endl;
+	std::cout << "Open: " << table[position].stock.stockdata[0].open << std::endl;
+	std::cout << "High: " << table[position].stock.stockdata[0].high << std::endl;
+	std::cout << "Low: " << table[position].stock.stockdata[0].low << std::endl;
 }
 
 void HashTable::plot(unsigned int position) {
@@ -165,4 +168,29 @@ void HashTable::plot(unsigned int position) {
 	}
 	std::cout << endDate;
 	std::cout << "\n";
+}
+
+
+bool HashTable::save(const string& filename) {
+	ofstream saveFile (filename + ".csv");
+	int position = 0;
+	for (const auto& entry : table) {
+		position = search(entry.stock.ticker);
+		if (position != -1) {
+			saveFile << position << "," << entry.stock.name << "," << entry.stock.wkn << "," << entry.stock.ticker << endl;
+
+			for (const auto& stock: entry.stock.stockdata) {
+				saveFile << stock.date;
+				saveFile << "," << stock.close;
+				saveFile << "," << stock.volume;
+				saveFile << "," << stock.open;
+				saveFile << "," << stock.high;
+				saveFile << "," << stock.low << endl;
+			}
+			saveFile << "#" << endl;
+		}
+	}
+
+	saveFile.close();
+	return true;
 }
