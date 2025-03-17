@@ -72,16 +72,13 @@ bool HashTable::import(const string & ticker) {
 	unsigned int hash = hashString(ticker);
 	string filename = ticker + ".csv";
 
-
 		ifstream fin;
 		string line = "", date = "", close = "", volume = "", open = "", high = "", low = "";
 		int location = 0;
 		int i = 0;
-	fstream fin;
 
-		fin.open(ticker);
-		std::getline(fin, line);
-	fin.open(filename, ios::in);
+		fin.open(filename, ios::in);
+		getline(fin, line);
 
 		while (getline(fin, line)) {
 			stringstream ss(line);
@@ -98,8 +95,6 @@ bool HashTable::import(const string & ticker) {
 				case 5: table[hash].stock.stockdata[i].low = token; break;
 				}
 				column++;
-	return true;
-	return false;
 
 			}
 			i++;
@@ -121,7 +116,7 @@ int HashTable::search(const string& ticker) {
 				int quadratic = (hash + i * i) % tableSize;
 				if (table[quadratic].type == EntryType::EMPTY) break;
 				if (table[quadratic].stock.ticker == ticker) {
-					std::cout << "FOUND " << table[hash].stock.ticker << std::endl;
+					std::cout << "FOUND " << table[hash].stock.name << std::endl;
 					return quadratic;
 				}
 			}
@@ -130,4 +125,15 @@ int HashTable::search(const string& ticker) {
 	}
 	std::cout << "NOT FOUND";
 	return -1;
+}
+
+bool HashTable::display(unsigned int position) {
+	std::cout << "Name: " << table[position].stock.name << std::endl;
+	std::cout << "Date: " << table[position].stock.stockdata[0].date << std::endl;
+	std::cout << "Close: " << table[position].stock.stockdata[0].close << std::endl;
+	std::cout << "Volume: " << table[position].stock.stockdata[0].volume << std::endl;
+	std::cout << "Open: " << table[position].stock.stockdata[0].open << std::endl;
+	std::cout << "High: " << table[position].stock.stockdata[0].high << std::endl;
+	std::cout << "Low: " << table[position].stock.stockdata[0].low << std::endl;
+	return 1;
 }

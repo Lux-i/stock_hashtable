@@ -40,12 +40,13 @@ int main() {
 			hashtable.remove(arg);
 		}
 		else if (command == "3" || command == "IMPORT") {
-			hashtable.import();
+			hashtable.import(arg);
 
 		}
 		else if (command == "4" || command == "SEARCH") {
 			int position = hashtable.search(arg);
-			std::cout << "The stock with ticker " + arg + " is stored at position " << position;
+			std::cout << "The stock with ticker " + arg + " is stored at position " << position << endl;
+			hashtable.display(position);
 		}
 	}
 }

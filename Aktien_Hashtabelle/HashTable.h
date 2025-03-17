@@ -18,7 +18,7 @@ public:
 	bool remove(const string&);
 	bool import(const string&);
 	int search(const string&);
-	bool display(const string&) {};
+	bool display(unsigned int position);
 	bool plot(const string&) {};
 	bool save(const string&) {};
 	bool load(const string&) {};
