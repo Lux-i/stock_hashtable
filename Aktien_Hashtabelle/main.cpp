@@ -11,6 +11,8 @@ int main() {
 	string input;
 	while (true) {
 		showMenu();
+
+		//command and arg parser
 		std::getline(cin, input);
 		string command;
 		string arg;
@@ -21,9 +23,6 @@ int main() {
 		if (command == "8" || command == "QUIT") {
 			break;
 		}
-		std::cout << "\ncommand: " << command << "\n";
-		std::cout << "arg: " << arg << "\n";
-		std::cout << "pos: " << pos << "\n\n";
 		//only check if argument is empty if command is not exit
 		if (pos == -1 || arg == (string)"") {
 			std::cout << "Missing argument!\n";
@@ -40,13 +39,44 @@ int main() {
 			hashtable.remove(arg);
 		}
 		else if (command == "3" || command == "IMPORT") {
-			hashtable.import(arg);
+			int position = hashtable.search(arg);
+			if (position != -1) {
+				hashtable.import(arg, position);
+			}
+			else {
+				std::cout << "\nThis ticker has not been added yet!\n";
+				std::cout << "Name: ";
+				string name;
+				std::getline(cin, name);
+				if (hashtable.add(arg)) {
+					int position = hashtable.search(arg);
+					if (position != -1) {
+						hashtable.import(arg, position);
+					}
+				}
+				else {
+					std::cout << "Error\n";
+				}
+			}
 
 		}
 		else if (command == "4" || command == "SEARCH") {
 			int position = hashtable.search(arg);
-			std::cout << "The stock with ticker " + arg + " is stored at position " << position << endl;
-			hashtable.display(position);
+			if (position != -1) {
+				hashtable.display(position);
+			}
+			else {
+				std::cout << "Ticker not found\n";
+			}
+		}
+		else if (command == "5" || command == "PLOT") {
+			int position = hashtable.search(arg);
+			if (position != -1) {
+				hashtable.plot(position);
+			}
+			else {
+				std::cout << "Ticker not found\n";
+			}
 		}
 		else if (command == "6" || command == "SAVE") {
 			hashtable.save(arg);

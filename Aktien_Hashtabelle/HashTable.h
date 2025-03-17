@@ -16,11 +16,11 @@ public:
 	}
 	bool add(const string&);
 	bool remove(const string&);
-	bool import(const string&);
+	bool import(const string&, unsigned int);
 	int search(const string&);
-	bool display(unsigned int position);
-	bool plot(const string&) {};
-	bool save(const string&);
+	void display(unsigned int);
+	void plot(unsigned int);
+	bool save(const string&) {};
 	bool load(const string&) {};
 private:
 	int tableSize;
