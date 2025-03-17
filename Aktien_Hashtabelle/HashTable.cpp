@@ -2,6 +2,7 @@
 #include <cmath>
 #include <iostream>
 #include <fstream>
+#include <sstream>
 
 //polynomial rolling hash based function
 unsigned int HashTable::hashString(const string& inputString) {
@@ -69,17 +70,38 @@ bool HashTable::import() {
 	unsigned int hash;
 	std::cout << "Kuerzel: ";
 	std::cin >> ticker;
+	hash = hashString(ticker);
 	ticker = ticker + ".csv";
 
-	if (hash = hashString(ticker)) {
-		fstream fin;
 
-		fin.open(ticker, ios::in);
+		ifstream fin;
+		string line = "", date = "", close = "", volume = "", open = "", high = "", low = "";
+		int location = 0;
+		int i = 0;
 
+		fin.open(ticker);
+		std::getline(fin, line);
 
-		return true;
-	}
+		while (getline(fin, line)) {
+			stringstream ss(line);
+			string token;
+			int column = 0;
 
+			while (getline(ss, token, ',')) {
+				switch (column) {
+				case 0: table[hash].stock.stockdata[i].date = token; break;
+				case 1: table[hash].stock.stockdata[i].close = token; break;
+				case 2: table[hash].stock.stockdata[i].volume = token; break;
+				case 3: table[hash].stock.stockdata[i].open = token; break;
+				case 4: table[hash].stock.stockdata[i].high = token; break;
+				case 5: table[hash].stock.stockdata[i].low = token; break;
+				}
+				column++;
+
+			}
+			i++;
+		}
+			return true;
 }
 
 int HashTable::search() {
@@ -92,6 +114,7 @@ int HashTable::search() {
 	hash = hashString(ticker);
 	if (table[hash].stock.ticker == ticker && table[hash].type == EntryType::OCCUPIED) {
 		std::cout << "FOUND " << table[hash].stock.ticker << std::endl;
+
 		return 1;
 	}
 	else {

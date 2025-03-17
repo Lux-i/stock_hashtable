@@ -4,11 +4,11 @@ using namespace std;
 
 struct StockData {
 	string date;
-	double open;
-	double close;
-	double low;
-	double high;
-	long volume;
+	string open;
+	string close;
+	string low;
+	string high;
+	string volume;
 };
 
 class Stock
@@ -19,6 +19,6 @@ public:
 	string name;
 	string wkn;
 	string ticker;
-	vector<StockData> stockdata;
+	StockData stockdata[30];
 };
 

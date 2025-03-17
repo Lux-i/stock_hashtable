@@ -36,6 +36,7 @@ int main() {
 			hashtable.remove();
 		}
 		else if (input == "3" || input == "IMPORT") {
+			hashtable.import();
 
 		}
 		else if (input == "4" || input == "SEARCH") {
