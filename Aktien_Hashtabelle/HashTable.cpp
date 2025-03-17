@@ -72,34 +72,34 @@ bool HashTable::import(const string & ticker) {
 	unsigned int hash = hashString(ticker);
 	string filename = ticker + ".csv";
 
-		ifstream fin;
-		string line = "", date = "", close = "", volume = "", open = "", high = "", low = "";
-		int location = 0;
-		int i = 0;
+	ifstream fin;
+	string line;
+	int location = 0;
+	int i = 0;
 
-		fin.open(filename, ios::in);
-		getline(fin, line);
+	fin.open(filename, ios::in);
+	getline(fin, line);
 
-		while (getline(fin, line)) {
-			stringstream ss(line);
-			string token;
-			int column = 0;
+	while (getline(fin, line)) {
+		stringstream ss(line);
+		string token;
+		int column = 0;
 
-			while (getline(ss, token, ',')) {
-				switch (column) {
-				case 0: table[hash].stock.stockdata[i].date = token; break;
-				case 1: table[hash].stock.stockdata[i].close = token; break;
-				case 2: table[hash].stock.stockdata[i].volume = token; break;
-				case 3: table[hash].stock.stockdata[i].open = token; break;
-				case 4: table[hash].stock.stockdata[i].high = token; break;
-				case 5: table[hash].stock.stockdata[i].low = token; break;
-				}
-				column++;
-
+		while (getline(ss, token, ',')) {
+			switch (column) {
+			case 0: table[hash].stock.stockdata[i].date = token; break;
+			case 1: table[hash].stock.stockdata[i].close = token; break;
+			case 2: table[hash].stock.stockdata[i].volume = token; break;
+			case 3: table[hash].stock.stockdata[i].open = token; break;
+			case 4: table[hash].stock.stockdata[i].high = token; break;
+			case 5: table[hash].stock.stockdata[i].low = token; break;
 			}
-			i++;
+			column++;
+
 		}
-			return true;
+		i++;
+	}
+	return true;
 }
 
 int HashTable::search(const string& ticker) {
