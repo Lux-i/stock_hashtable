@@ -11,35 +11,40 @@ int main() {
 	string input;
 	while (true) {
 		showMenu();
-		std::cin >> input;
-		/*string command;
+		std::getline(cin, input);
+		string command;
 		string arg;
-		std::size_t pos = input.find(' ');
+		int pos = input.find(' ');
 		command = input.substr(0, pos);
 		arg = input.substr(pos + 1);
-		std::cout << hashtable.hash(input) << "\n";
-		if (arg == "") {
-			std::cout << "Missing argument!\n";
-		}*/
-		if (input == "8" || input == "QUIT") {
+
+		if (command == "8" || command == "QUIT") {
 			break;
 		}
-		else if (input == "1" || input == "ADD") {
-			if (hashtable.add()) {
+		std::cout << "\ncommand: " << command << "\n";
+		std::cout << "arg: " << arg << "\n";
+		std::cout << "pos: " << pos << "\n\n";
+		//only check if argument is empty if command is not exit
+		if (pos == -1 || arg == (string)"") {
+			std::cout << "Missing argument!\n";
+		}
+		else if (command == "1" || command == "ADD") {
+			if (hashtable.add(arg)) {
 				std::cout << "Successfully added\n";
 			}
 			else {
 				std::cout << "Error\n";
 			}
 		}
-		else if (input == "2" || input == "DEL") {
-			hashtable.remove();
+		else if (command == "2" || command == "DEL") {
+			hashtable.remove(arg);
 		}
-		else if (input == "3" || input == "IMPORT") {
+		else if (command == "3" || command == "IMPORT") {
 
 		}
-		else if (input == "4" || input == "SEARCH") {
-			hashtable.search();
+		else if (command == "4" || command == "SEARCH") {
+			int position = hashtable.search(arg);
+			std::cout << "The stock with ticker " + arg + " is stored at position " << position;
 		}
 	}
 }
