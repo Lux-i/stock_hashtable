@@ -68,7 +68,7 @@ bool HashTable::remove(const string& ticker) {
 	return false;
 }
 
-bool HashTable::import(const string & ticker, unsigned int position) {
+bool HashTable::import(const string& ticker, unsigned int position) {
 	string filename = ticker + ".csv";
 
 	ifstream fin;
@@ -156,8 +156,7 @@ void HashTable::plot(unsigned int position) {
 		for (size_t i = 0; i < count; i++) {
 			std::cout << (data[i].close >= threshold ? "* " : "  ");
 		}
-		if (row == plotHeight) std::cout << maxPrice << "$";
-		if (row == 0) std::cout << minPrice << "$";
+		std::cout << threshold << "$";
 		std::cout << "\n";
 	}
 	std::cout << startDate;
