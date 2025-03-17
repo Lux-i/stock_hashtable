@@ -137,3 +137,27 @@ bool HashTable::display(unsigned int position) {
 	std::cout << "Low: " << table[position].stock.stockdata[0].low << std::endl;
 	return 1;
 }
+
+bool HashTable::save(const string& filename) {
+	ofstream saveFile (filename + ".csv");
+	int position = 0;
+	for (const auto& table : table) {
+		position = search(table.stock.ticker);
+		if (position != -1) {
+			saveFile << position << "," << table.stock.name << "," << table.stock.wkn << "," << table.stock.ticker << endl;
+
+			for (const auto& stock: table.stock.stockdata) {
+				saveFile << "," << stock.date;
+				saveFile << "," << stock.close;
+				saveFile << "," << stock.volume;
+				saveFile << "," << stock.open;
+				saveFile << "," << stock.high;
+				saveFile << "," << stock.low << endl;
+			}
+			saveFile << "#" << endl;
+		}
+	}
+
+	saveFile.close();
+	return true;
+}

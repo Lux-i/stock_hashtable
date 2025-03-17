@@ -48,5 +48,8 @@ int main() {
 			std::cout << "The stock with ticker " + arg + " is stored at position " << position << endl;
 			hashtable.display(position);
 		}
+		else if (command == "6" || command == "SAVE") {
+			hashtable.save(arg);
+		}
 	}
 }
