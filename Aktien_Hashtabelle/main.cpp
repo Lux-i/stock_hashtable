@@ -11,8 +11,8 @@ int main() {
 	string input;
 	while (true) {
 		showMenu();
-		std::getline(cin, input);
-		string command;
+		std::cin >> input;
+		/*string command;
 		string arg;
 		std::size_t pos = input.find(' ');
 		command = input.substr(0, pos);
@@ -20,18 +20,26 @@ int main() {
 		std::cout << hashtable.hash(input) << "\n";
 		if (arg == "") {
 			std::cout << "Missing argument!\n";
+		}*/
+		if (input == "8" || input == "QUIT") {
+			break;
 		}
-		/*else if (input == "1" || input == "ADD") {
-
+		else if (input == "1" || input == "ADD") {
+			if (hashtable.add()) {
+				std::cout << "Successfully added\n";
+			}
+			else {
+				std::cout << "Error\n";
+			}
 		}
 		else if (input == "2" || input == "DEL") {
-
+			hashtable.remove();
 		}
 		else if (input == "3" || input == "IMPORT") {
 
 		}
 		else if (input == "4" || input == "SEARCH") {
-
-		}*/
+			hashtable.search();
+		}
 	}
 }

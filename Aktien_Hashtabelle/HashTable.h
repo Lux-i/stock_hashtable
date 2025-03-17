@@ -14,10 +14,10 @@ public:
 	HashTable(int size) : tableSize(size), count(0) {
 		table.resize(tableSize);
 	}
-	bool add() {};
-	bool remove() {};
-	bool import() {};
-	int search() {};
+	bool add();
+	bool remove();
+	bool import();
+	int search();
 	bool display() {};
 	bool plot() {};
 	bool save() {};

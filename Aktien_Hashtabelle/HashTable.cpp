@@ -1,5 +1,7 @@
 #include "HashTable.h"
 #include <cmath>
+#include <iostream>
+#include <fstream>
 
 //polynomial rolling hash based function
 unsigned int HashTable::hashString(const string& inputString) {
@@ -18,4 +20,82 @@ unsigned int HashTable::hashString(const string& inputString) {
 	}
 	//modulo the result by tableSize so we do not get an overflowing value
 	return hash % tableSize;
+}
+
+bool HashTable::add() {
+	std::string name;
+	std::string wkn;
+	std::string ticker;
+	unsigned int hash;
+
+	std::cout << "Name: ";
+	std::cin >> name;
+	std::cout << "WKN: ";
+	std::cin >> wkn;
+	std::cout << "Kürzel: ";
+	std::cin >> ticker;
+	if (hash = hashString(ticker)){
+		if (table[hash].type != EntryType::OCCUPIED) {
+			table[hash].stock.name = name;
+			table[hash].stock.wkn = wkn;
+			table[hash].stock.ticker = ticker;
+			table[hash].type = EntryType::OCCUPIED;
+			return true;
+		}
+		else {
+			
+			return false;
+		}
+}
+}
+
+bool HashTable::remove() {
+	std::string ticker;
+	unsigned int hash;
+	std::cout << "Kuerzel: ";
+	std::cin >> ticker;
+
+	if (hash = hashString(ticker)) {
+		table[hash].stock.name = "";
+		table[hash].stock.wkn = "";
+		table[hash].stock.ticker = "";
+		table[hash].type = EntryType::DELETED;
+		return true;
+	}
+}
+
+bool HashTable::import() {
+	std::string ticker;
+	unsigned int hash;
+	std::cout << "Kuerzel: ";
+	std::cin >> ticker;
+	ticker = ticker + ".csv";
+
+	if (hash = hashString(ticker)) {
+		fstream fin;
+
+		fin.open(ticker, ios::in);
+
+
+		return true;
+	}
+
+}
+
+int HashTable::search() {
+	std::string ticker;
+	unsigned int hash;
+
+	std::cout << "Kürzel: ";
+	std::cin >> ticker;
+
+	hash = hashString(ticker);
+	if (table[hash].stock.ticker == ticker && table[hash].type == EntryType::OCCUPIED) {
+		std::cout << "FOUND " << table[hash].stock.ticker << std::endl;
+		return 1;
+	}
+	else {
+		std::cout << "NOT FOUND";
+		return 0;
+	}
 }
