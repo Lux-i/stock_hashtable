@@ -14,21 +14,19 @@ public:
 	HashTable(int size) : tableSize(size), count(0) {
 		table.resize(tableSize);
 	}
-	bool add();
-	bool remove();
-	bool import();
-	int search();
-	bool display() {};
-	bool plot() {};
-	bool save() {};
-	bool load() {};
-	unsigned int hash(const string& s) {
-		return hashString(s);
-	}
+	bool add(const string&);
+	bool remove(const string&);
+	bool import(const string&);
+	int search(const string&);
+	bool display(const string&) {};
+	bool plot(const string&) {};
+	bool save(const string&) {};
+	bool load(const string&) {};
 private:
 	int tableSize;
 	int count;
 	vector<Entry> table;
 	unsigned int hashString(const string&);
+	bool insert();
 };
 

@@ -23,64 +23,65 @@ unsigned int HashTable::hashString(const string& inputString) {
 	return hash % tableSize;
 }
 
-bool HashTable::add() {
-	std::string name;
-	std::string wkn;
-	std::string ticker;
-	unsigned int hash;
+bool HashTable::add(const string& name) {
+	string wkn;
+	string ticker;
 
-	std::cout << "Name: ";
-	std::cin >> name;
 	std::cout << "WKN: ";
-	std::cin >> wkn;
-	std::cout << "Kürzel: ";
-	std::cin >> ticker;
-	if (hash = hashString(ticker)){
-		if (table[hash].type != EntryType::OCCUPIED) {
-			table[hash].stock.name = name;
-			table[hash].stock.wkn = wkn;
-			table[hash].stock.ticker = ticker;
-			table[hash].type = EntryType::OCCUPIED;
-			return true;
-		}
-		else {
-			
-			return false;
-		}
-}
-}
-
-bool HashTable::remove() {
-	std::string ticker;
-	unsigned int hash;
+	std::getline(cin, wkn);
 	std::cout << "Kuerzel: ";
-	std::cin >> ticker;
+	std::getline(cin, ticker);
 
-	if (hash = hashString(ticker)) {
-		table[hash].stock.name = "";
-		table[hash].stock.wkn = "";
-		table[hash].stock.ticker = "";
-		table[hash].type = EntryType::DELETED;
+	unsigned int hash = hashString(ticker);
+
+	if (table[hash].type != EntryType::OCCUPIED) {
+		table[hash].stock.name = name;
+		table[hash].stock.wkn = wkn;
+		table[hash].stock.ticker = ticker;
+		table[hash].type = EntryType::OCCUPIED;
 		return true;
 	}
+	else {
+		//quadratic probing loop
+		for (int i = 1; i <= tableSize; i++) {
+			unsigned int quadratic = (hash + i * i) % tableSize;
+			if (table[quadratic].type != EntryType::OCCUPIED) {
+				table[quadratic].stock.name = name;
+				table[quadratic].stock.wkn = wkn;
+				table[quadratic].stock.ticker = ticker;
+				table[quadratic].type = EntryType::OCCUPIED;
+				return true;
+			}
+		}
+	}
+	return false;
 }
 
-bool HashTable::import() {
-	std::string ticker;
-	unsigned int hash;
-	std::cout << "Kuerzel: ";
-	std::cin >> ticker;
-	hash = hashString(ticker);
-	ticker = ticker + ".csv";
+bool HashTable::remove(const string& ticker) {
+	unsigned int hash = hashString(ticker);
+
+	table[hash].stock.name = "";
+	table[hash].stock.wkn = "";
+	table[hash].stock.ticker = "";
+	table[hash].type = EntryType::DELETED;
+	return true;
+	return false;
+}
+
+bool HashTable::import(const string & ticker) {
+	unsigned int hash = hashString(ticker);
+	string filename = ticker + ".csv";
 
 
 		ifstream fin;
 		string line = "", date = "", close = "", volume = "", open = "", high = "", low = "";
 		int location = 0;
 		int i = 0;
+	fstream fin;
 
 		fin.open(ticker);
 		std::getline(fin, line);
+	fin.open(filename, ios::in);
 
 		while (getline(fin, line)) {
 			stringstream ss(line);
@@ -97,6 +98,8 @@ bool HashTable::import() {
 				case 5: table[hash].stock.stockdata[i].low = token; break;
 				}
 				column++;
+	return true;
+	return false;
 
 			}
 			i++;
@@ -104,21 +107,27 @@ bool HashTable::import() {
 			return true;
 }
 
-int HashTable::search() {
-	std::string ticker;
-	unsigned int hash;
+int HashTable::search(const string& ticker) {
+	unsigned int hash = hashString(ticker);
 
-	std::cout << "Kürzel: ";
-	std::cin >> ticker;
+	if (table[hash].type == EntryType::OCCUPIED) {
+		if (table[hash].stock.ticker == ticker) {
+			std::cout << "FOUND " << table[hash].stock.ticker << std::endl;
+			return hash;
+		}
+		else {
+			//quadratic probing loop
+			for (int i = 1; i <= tableSize; i++) {
+				int quadratic = (hash + i * i) % tableSize;
+				if (table[quadratic].type == EntryType::EMPTY) break;
+				if (table[quadratic].stock.ticker == ticker) {
+					std::cout << "FOUND " << table[hash].stock.ticker << std::endl;
+					return quadratic;
+				}
+			}
+		}
 
-	hash = hashString(ticker);
-	if (table[hash].stock.ticker == ticker && table[hash].type == EntryType::OCCUPIED) {
-		std::cout << "FOUND " << table[hash].stock.ticker << std::endl;
-
-		return 1;
 	}
-	else {
-		std::cout << "NOT FOUND";
-		return 0;
-	}
+	std::cout << "NOT FOUND";
+	return -1;
 }
