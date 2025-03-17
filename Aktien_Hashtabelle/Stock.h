@@ -3,12 +3,12 @@
 using namespace std;
 
 struct StockData {
-	string date;
-	string open;
-	string close;
-	string low;
-	string high;
-	string volume;
+	string date = "NOT INITIALIZED";
+	double open = 0;
+	double close = 0;
+	double low = 0;
+	double high = 0;
+	unsigned int volume = 0;
 };
 
 class Stock

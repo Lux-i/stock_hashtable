@@ -68,8 +68,7 @@ bool HashTable::remove(const string& ticker) {
 	return false;
 }
 
-bool HashTable::import(const string & ticker) {
-	unsigned int hash = hashString(ticker);
+bool HashTable::import(const string & ticker, unsigned int position) {
 	string filename = ticker + ".csv";
 
 	ifstream fin;
@@ -87,15 +86,14 @@ bool HashTable::import(const string & ticker) {
 
 		while (getline(ss, token, ',')) {
 			switch (column) {
-			case 0: table[hash].stock.stockdata[i].date = token; break;
-			case 1: table[hash].stock.stockdata[i].close = token; break;
-			case 2: table[hash].stock.stockdata[i].volume = token; break;
-			case 3: table[hash].stock.stockdata[i].open = token; break;
-			case 4: table[hash].stock.stockdata[i].high = token; break;
-			case 5: table[hash].stock.stockdata[i].low = token; break;
+			case 0: table[position].stock.stockdata[i].date = token; break;
+			case 1: table[position].stock.stockdata[i].close = stod(token.substr(1)); break;
+			case 2: table[position].stock.stockdata[i].volume = stoul(token); break;
+			case 3: table[position].stock.stockdata[i].open = stod(token.substr(1)); break;
+			case 4: table[position].stock.stockdata[i].high = stod(token.substr(1)); break;
+			case 5: table[position].stock.stockdata[i].low = stod(token.substr(1)); break;
 			}
 			column++;
-
 		}
 		i++;
 	}
@@ -107,7 +105,6 @@ int HashTable::search(const string& ticker) {
 
 	if (table[hash].type == EntryType::OCCUPIED) {
 		if (table[hash].stock.ticker == ticker) {
-			std::cout << "FOUND " << table[hash].stock.ticker << std::endl;
 			return hash;
 		}
 		else {
@@ -116,7 +113,6 @@ int HashTable::search(const string& ticker) {
 				int quadratic = (hash + i * i) % tableSize;
 				if (table[quadratic].type == EntryType::EMPTY) break;
 				if (table[quadratic].stock.ticker == ticker) {
-					std::cout << "FOUND " << table[hash].stock.name << std::endl;
 					return quadratic;
 				}
 			}
@@ -127,13 +123,44 @@ int HashTable::search(const string& ticker) {
 	return -1;
 }
 
-bool HashTable::display(unsigned int position) {
+void HashTable::display(unsigned int position) {
 	std::cout << "Name: " << table[position].stock.name << std::endl;
 	std::cout << "Date: " << table[position].stock.stockdata[0].date << std::endl;
-	std::cout << "Close: " << table[position].stock.stockdata[0].close << std::endl;
+	std::cout << "Open: " << table[position].stock.stockdata[0].open << "$" << std::endl;
+	std::cout << "Close: " << table[position].stock.stockdata[0].close << "$" << std::endl;
+	std::cout << "Low: " << table[position].stock.stockdata[0].low << "$" << std::endl;
+	std::cout << "High: " << table[position].stock.stockdata[0].high << "$" << std::endl;
 	std::cout << "Volume: " << table[position].stock.stockdata[0].volume << std::endl;
-	std::cout << "Open: " << table[position].stock.stockdata[0].open << std::endl;
-	std::cout << "High: " << table[position].stock.stockdata[0].high << std::endl;
-	std::cout << "Low: " << table[position].stock.stockdata[0].low << std::endl;
-	return 1;
+}
+
+void HashTable::plot(unsigned int position) {
+	const auto& data = table[position].stock.stockdata;
+	string startDate = data[0].date, endDate;
+	int count = 0; //counter for valid entries (if not full array has imported values)
+	double minPrice = data[0].close, maxPrice = data[0].close;
+	for (const auto& d : data) {
+		if (d.date == "NOT INITIALIZED") break;
+		minPrice = min(minPrice, d.close);
+		maxPrice = max(maxPrice, d.close);
+		endDate = d.date;
+		count++;
+	}
+
+	int plotHeight = 10;
+	for (int row = plotHeight; row >= 0; row--) {
+		double threshold = minPrice + (maxPrice - minPrice) * row / plotHeight;
+		for (size_t i = 0; i <= 4; i++) {
+			std::cout << "  ";
+		}
+		for (size_t i = 0; i < count; i++) {
+			std::cout << (data[i].close >= threshold ? "* " : "  ");
+		}
+		std::cout << "\n";
+	}
+	std::cout << startDate;
+	for (size_t i = 0; i < count; i++) {
+		std::cout << "--";
+	}
+	std::cout << endDate;
+	std::cout << "\n";
 }
