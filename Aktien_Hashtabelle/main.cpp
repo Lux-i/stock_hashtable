@@ -48,7 +48,7 @@ int main() {
 				std::cout << "Name: ";
 				string name;
 				std::getline(cin, name);
-				if (hashtable.add(arg)) {
+				if (hashtable.add(name)) {
 					int position = hashtable.search(arg);
 					if (position != -1) {
 						hashtable.import(arg, position);

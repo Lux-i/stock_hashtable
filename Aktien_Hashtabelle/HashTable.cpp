@@ -175,13 +175,13 @@ void HashTable::plot(unsigned int position) {
 bool HashTable::save(const string& filename) {
 	ofstream saveFile (filename + ".csv");
 	int position = 0;
-	for (const auto& table : table) {
-		position = search(table.stock.ticker);
+	for (const auto& entry : table) {
+		position = search(entry.stock.ticker);
 		if (position != -1) {
-			saveFile << position << "," << table.stock.name << "," << table.stock.wkn << "," << table.stock.ticker << endl;
+			saveFile << position << "," << entry.stock.name << "," << entry.stock.wkn << "," << entry.stock.ticker << endl;
 
-			for (const auto& stock: table.stock.stockdata) {
-				saveFile << "," << stock.date;
+			for (const auto& stock: entry.stock.stockdata) {
+				saveFile << stock.date;
 				saveFile << "," << stock.close;
 				saveFile << "," << stock.volume;
 				saveFile << "," << stock.open;
